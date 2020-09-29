@@ -1,7 +1,11 @@
 import React from 'react';
-import ClientsBox from "./ClientsBox";
+import {connect} from "react-redux";
 import Routes from "../../Routes";
+import {getClients} from "../../redux/actions/actions";
 
+const mapDispatchToProps = {
+    getClients,
+}
 
 
 class Content extends React.Component{
@@ -9,6 +13,13 @@ class Content extends React.Component{
         super(props);
 
     }
+
+
+    // componentDidMount() {
+    //     fetch("https://jsonplaceholder.typicode.com/users")
+    //         .then(res => res.json())
+    //         .then(data => this.props.getClients(data))
+    // }
 
 
     render() {
@@ -20,4 +31,4 @@ class Content extends React.Component{
     }
 }
 
-export default Content
+export default connect(null, mapDispatchToProps)(Content)
