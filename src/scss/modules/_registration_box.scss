@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Londrina+Shadow&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Piazzolla:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Outline&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fascinate+Inline&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
 
 .content_registration_box {
   width: 40%;
@@ -5,7 +11,7 @@
   margin: auto;
   box-sizing: border-box;
   padding: 3% 3% !important;
-  border: 1px solid red;
+  border: 1px solid transparent;
 
 
   #registration_form {
@@ -18,14 +24,31 @@
     label {
       margin-top: 10px;
       margin-bottom: 0;
+      font-family: 'Londrina Shadow', cursive;
+      color: black;
+
 
       span {
         float: right;
+        color: red;
+        font-family: 'Piazzolla', serif;
       }
     }
 
     input, select {
       outline: none;
+      border: 1px solid rgba(120, 72, 0, 0.5);
+      border-radius: 5px;
+
+      box-shadow: 1px 0px rgb(88, 52, 0), 1px 1px rgb(122, 74, 0),
+      2px 1px rgb(87, 51, 0), 2px 2px rgb(121, 73, 0),
+      3px 2px rgb(86, 50, 0), 3px 3px rgb(120, 72, 0);
+
+    }
+
+    input[name="creditNumber"] {
+      border: none;
+      box-shadow: none
     }
 
     .select_box {
@@ -42,15 +65,28 @@
       color: transparent;
     }
 
-
-    .btn_show_credit_card {
-      width: 20%;
-      cursor: pointer;
-      background: antiquewhite;
+    #err_credit_card{
+      margin-top: 5%;
     }
 
-    .credit_card_box{
-      margin-top: 10px;
+    .btn_show_credit_card {
+      width: 40%;
+      cursor: pointer;
+      height: 40px;
+
+      .icon_credit_card{
+        font-size: 60px;
+        float: right;
+        color: rgba(120, 72, 0, 0.9);
+        animation-name: credit_card;
+        animation-fill-mode: initial;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+      }
+    }
+
+    .credit_card_box {
+      //margin-top: 10px;
       width: 250px;
       height: 160px;
       padding: 2%;
@@ -59,7 +95,7 @@
       border-radius: 15px;
       float: left;
 
-      .credit_card_box_input{
+      .credit_card_box_input {
         width: 99% !important;
         height: 15%;
         margin: auto;
@@ -68,6 +104,8 @@
       }
     }
 
+
+
     #btn_add_client {
       width: 50%;
       margin: auto;
@@ -75,8 +113,36 @@
       border: 1px solid grey;
       cursor: pointer;
       margin-top: 20px;
+      transition: .3s;
+      padding: 2%;
+      font-family: 'Fascinate Inline', cursive;
+      color:rgb(120, 72, 0);
+      border-radius: 5px;
+      box-shadow: 1px 0px rgb(88, 52, 0), 1px 1px rgb(122, 74, 0),
+      2px 1px rgb(87, 51, 0), 2px 2px rgb(121, 73, 0),
+      3px 2px rgb(86, 50, 0), 3px 3px rgb(120, 72, 0);
+
+      &:hover {
+        margin-top: 15px;
+        //margin-left: 3px;
+        box-shadow: 1px 0px rgb(88, 52, 0), 1px 1px rgb(122, 74, 0),
+        2px 1px rgb(87, 51, 0), 2px 2px rgb(121, 73, 0),
+        3px 2px rgb(86, 50, 0), 3px 3px rgb(120, 72, 0),
+        4px 3px rgb(88, 52, 0), 1px 1px rgb(122, 74, 0),
+        5px 4px rgb(87, 51, 0), 2px 2px rgb(121, 73, 0),
+        6px 5px rgb(86, 50, 0), 3px 3px rgb(120, 72, 0);
+      }
     }
   }
-
 }
 
+.ajax_test {
+  margin-top: -10%;
+  height: 70px;
+  font-size: 15px;
+  text-align: center;
+  overflow: hidden;
+  font-family: 'Jua', sans-serif;
+  color:rgb(120, 72, 0);
+
+}

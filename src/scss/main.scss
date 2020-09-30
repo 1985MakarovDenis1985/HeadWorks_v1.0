@@ -1,8 +1,16 @@
+$main_text_shadow : #520e23;
+$border_color : saddlebrown;
+$main_text_shadow : 10px 10px 5px 0px rgba(0,0,0,0.75);
+$main_box_shadow : 10px 10px 5px 0px rgba(0,0,0,0.75);
 
+
+
+
+@import "modules/kaemframes";
 @import "modules/header";
 @import "modules/client_list";
 @import "modules/registration_box";
-
+@import "modules/footer";
 
 
 

@@ -35,7 +35,7 @@ class ClientsBox extends React.Component {
 
                 <div className="content_box_btn_registration">
                     <div className="btn_to_registration"  style={{fontSize: "50px"}}>
-                        <Link to="/registration">Registration</Link>
+                        <Link to="/registration"><span>Registration</span></Link>
                     </div>
                 </div>
             </div>

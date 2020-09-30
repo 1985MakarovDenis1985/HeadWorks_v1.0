@@ -2,7 +2,9 @@ import React from 'react';
 
 
 
-class Footer extends React.Component{
+
+
+class Footer extends React.Component {
     constructor(props) {
         super(props);
 
@@ -11,9 +13,9 @@ class Footer extends React.Component{
 
     render() {
         return (
-            <header className="footer">
-                <h5>FOOTER</h5>
-            </header>
+                <footer className="footer">
+                    <h5 className="footer_text">Tech Task fo HeadWorks Company 2020</h5>
+                </footer>
         );
     }
 }

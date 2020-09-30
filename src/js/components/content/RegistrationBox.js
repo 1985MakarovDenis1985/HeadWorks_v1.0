@@ -3,7 +3,8 @@ import {connect} from "react-redux";
 import {setClients} from "../../redux/actions/actions";
 import CreditCardBox from "./CreditCardBox";
 import PropTypes from "prop-types"
-// import {isNumber} from "./validationForm";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCreditCard} from "@fortawesome/free-solid-svg-icons";
 
 
 const mapPropsToState = (state) => {
@@ -31,15 +32,29 @@ class RegistrationBox extends React.Component {
                 mobileApp: "",
                 dateRegistration: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
                 creditNumber: "",
-                creditCard: {
-                    number: "",
-                    date: "",
-                    cv: ""
-                }
             },
-            creditCardBox: true
+            creditCardBox: false,
+            bottomText: "",
+            validation: false
         }
     }
+
+    componentDidMount() {
+        fetch("https://meowfacts.herokuapp.com")
+            .then(res => res.json())
+            .then(res =>
+                document.getElementById("ajax_test").innerText = res.data
+            )
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const registrationBlock = document.getElementById("content_registration_box");
+        const ajaxText = document.getElementById("ajax_test");
+        console.log(this.state.creditCardBox);
+        // (this.state.validation == false) ? registrationBlock.style.borderColor = "red" : registrationBlock.style.borderColor = "transparent";
+        (this.state.creditCardBox == false) ? ajaxText.style.display = "block" : ajaxText.style.display = "none"
+    }
+
 
     valueCardNumber = (e) => {
         e.preventDefault()
@@ -47,7 +62,9 @@ class RegistrationBox extends React.Component {
         const numberOfCart = Object.assign({}, this.state.person)
         numberOfCart[name] = value
 
-        if (numberOfCart.creditNumber.length != 16){numberOfCart.creditNumber = "nothing"}
+        if (numberOfCart.creditNumber.length != 16) {
+            numberOfCart.creditNumber = "nothing"
+        }
 
         return new Promise((res, rej) => {
             this.setState({
@@ -69,11 +86,11 @@ class RegistrationBox extends React.Component {
         return new Promise((res, rej) => {
             let newClient = Object.assign(this.state.person, {})
             newClient[name] = value
-            // console.log(newClient)
             this.setState({
                 person:
                 newClient
             })
+            console.log(this.state.validation)
             this.validationForm()
             res()
         })
@@ -82,32 +99,32 @@ class RegistrationBox extends React.Component {
 
     addNewClient = (e) => {
         e.preventDefault()
-        console.log(this.state.person.creditNumber)
-
         const {setClients} = this.props
-        setClients(this.state.person)
-        this.setState({
-            person: {
-                id: this.props.clients.length + 2,
-                firstName: "",
-                secondName: "",
-                sex: "man",
-                loyaltyProgram: "",
-                mobileApp: "",
-                dateRegistration: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
-                creditNumber: "",
-                creditCard: {
-                    number: "",
-                    date: "",
-                    cv: ""
-                }
-            }
-
-        })
-
-        setTimeout(() => {
-            console.log(this.props.clients)
-        })
+        if (this.state.validation == true) {
+            return new Promise((res, rej) => {
+                setClients(this.state.person)
+                res()
+            }).then(() => {
+                this.setState({
+                    person: {
+                        id: this.props.clients.length + 2,
+                        firstName: "",
+                        secondName: "",
+                        sex: "man",
+                        loyaltyProgram: "",
+                        mobileApp: "",
+                        dateRegistration: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
+                        creditNumber: "",
+                    },
+                    creditCardBox: false,
+                    validation: false
+                })
+            }).then(() => {
+                this.validationForm()
+            })
+        } else {
+            console.log("sorry")
+        }
     }
 
     showCreditCard = () => {
@@ -123,18 +140,20 @@ class RegistrationBox extends React.Component {
         const {creditNumber, firstName, secondName} = this.state.person;
         const errName = document.getElementById("err_name");
         const errSecondName = document.getElementById("err_second_name");
-        const errCreditCard = document.getElementById("err_credit_card");
-        (firstName.length >= 2) ? errName.style.color = "green" : errName.style.color = "red";
-        (secondName.length >=2) ? errSecondName.style.color = "green" : errSecondName.style.color = "red";
-        (creditNumber.length == 16) ? errCreditCard.style.color = "green" : errCreditCard.style.color = "red"
 
+        (firstName.length >= 2) ? errName.style.color = "green" ? errName.style.color = "green" : errName.style.color = "red";
+        (secondName.length >= 2) ? errSecondName.style.color = "green" : errSecondName.style.color = "red";
+        (firstName.length >= 2 && secondName.length >= 2) ? this.setState({validation: true}) : this.setState({validation: false})
+        if (this.state.creditCardBox) {
+            const errCreditCard = document.getElementById("err_credit_card");
+            (creditNumber.length == 16) ? errCreditCard.style.color = "green" : errCreditCard.style.color = "red";
+        }
     }
 
 
     render() {
-
         return (
-            <div className="content_box content_registration_box">
+            <div className="content_box content_registration_box" id="content_registration_box">
                 <form
                     onSubmit={this.addNewClient}
                     id="registration_form"
@@ -169,20 +188,27 @@ class RegistrationBox extends React.Component {
                         </select>
                     </div>
 
-                    <label htmlFor="loyaltyProgram">LOYALTY PROGRAM <span className="err_text" id="err_loyalty_program">err_loyalty_program</span></label>
+                    <label htmlFor="loyaltyProgram">LOYALTY PROGRAM <span className="err_text"
+                                                                          id="err_loyalty_program">err_loyalty_program</span></label>
                     <input disabled
                            name="loyaltyProgram"
                            type="text"
                            defaultValue="not available"/>
 
 
-                    <label htmlFor="creditCard" style={{float: "left"}}> CREDIT CARD <span
+                    <label htmlFor="creditCard" style={{float: "left"}}>ADD CREDIT CARD <span
                         className="btn_show_credit_card" type="click"
-                        onClick={this.showCreditCard}>Add card</span></label>
-                    <div>{this.state.creditCardBox ? <CreditCardBox valueCardNumber={this.valueCardNumber}/> : null}</div>
+                        onClick={this.showCreditCard}><FontAwesomeIcon className="icon_credit_card" icon={faCreditCard}/></span>
 
 
-                    <label htmlFor="mobileApp">MOBILE APPLICATION<span className="err_text" id="err_m_app">err_m_app</span></label>
+
+                    </label>
+                    <div>{this.state.creditCardBox ?
+                        <CreditCardBox valueCardNumber={this.valueCardNumber}/> : null}</div>
+
+
+                    <label htmlFor="mobileApp">MOBILE APPLICATION<span className="err_text"
+                                                                       id="err_m_app">err_m_app</span></label>
                     <input disabled
                            name="mobileApp"
                            type="text"
@@ -192,6 +218,8 @@ class RegistrationBox extends React.Component {
                         type="submit" id="btn_add_client">add client
                     </button>
                 </form>
+
+                <h5 className="ajax_test" id="ajax_test"></h5>
             </div>
         );
     }

@@ -4,6 +4,7 @@ import {
     faArrowRight,
     faPhoneAlt,
     faEnvelope,
+    faCreditCard
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -11,4 +12,5 @@ library.add(
     faArrowRight,
     faPhoneAlt,
     faEnvelope,
+    faCreditCard
     )
