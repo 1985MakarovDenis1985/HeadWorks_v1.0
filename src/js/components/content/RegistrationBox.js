@@ -33,7 +33,7 @@ class RegistrationBox extends React.Component {
                 dateRegistration: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
                 creditNumber: "",
             },
-            creditCardBox: false,
+            creditCardBox: true,
             bottomText: "",
             validation: false
         }
@@ -122,10 +122,10 @@ class RegistrationBox extends React.Component {
                 })
             }).then(() => {
                 this.validationAndAnimationForm()
-                document.getElementById("notice_message").style.animationName = "notice_message_appear"
+                document.getElementById("notice_message").style.animationName = "nothing"
                 setTimeout(()=>{
-                    document.getElementById("notice_message").style.animationName = "null"
-                }, 3000)
+                    document.getElementById("notice_message").style.animationName = "notice_message_appear"
+                }, 100)
             })
         } else {
             document.getElementById("error_text_information").style.animationName = "main_err_text_appear"

@@ -11,7 +11,9 @@
   height: 100%;
   margin: auto;
   box-sizing: border-box;
-  padding: 3% 3% !important;
+  //padding:0 !important;
+  padding: 0;
+  padding-top: 3%;
   border: 1px solid transparent;
 
 
@@ -67,10 +69,20 @@
 
     .err_text {
       color: transparent;
+
+      @media screen and (max-width: 1024px) {
+        font-size: 14px;
+      }
+
     }
 
-    #err_credit_card{
+    #err_credit_card {
       margin-top: 5%;
+
+      @media screen and (max-width: 1024px) {
+        font-size: 12px;
+      }
+
     }
 
     .btn_show_credit_card {
@@ -78,7 +90,7 @@
       cursor: pointer;
       height: 40px;
 
-      .icon_credit_card{
+      .icon_credit_card {
         font-size: 60px;
         float: right;
         color: rgba(120, 72, 0, 0.9);
@@ -99,15 +111,24 @@
       border-radius: 15px;
       float: left;
 
+      @media screen and (max-width: 1024px) {
+        width: 180px;
+        height: 120px;
+      }
+
       .credit_card_box_input {
         width: 99% !important;
         height: 15%;
         margin: auto;
         margin-top: 30px;
         border: 1px solid transparent;
+
+        @media screen and (max-width: 1024px) {
+          height: 9%;
+        }
+
       }
     }
-
 
 
     #btn_add_client {
@@ -120,7 +141,8 @@
       transition: .3s;
       padding: 2%;
       font-family: 'Fascinate Inline', cursive;
-      color:rgb(120, 72, 0);
+      color: rgb(120, 72, 0);
+      z-index: 1000;
       border-radius: 5px;
       box-shadow: 1px 0px rgb(88, 52, 0), 1px 1px rgb(122, 74, 0),
       2px 1px rgb(87, 51, 0), 2px 2px rgb(121, 73, 0),
@@ -147,27 +169,31 @@
   text-align: center;
   overflow: hidden;
   font-family: 'Jua', sans-serif;
-  color:rgb(120, 72, 0);
+  color: rgb(120, 72, 0);
 }
 
-.error_text_information{
+.error_text_information {
   margin-top: -20%;
   height: 70px;
   font-size: 15px;
   text-align: center;
   overflow: hidden;
   font-family: 'Jua', sans-serif;
-  color:rgb(120, 72, 0);
+  color: rgb(120, 72, 0);
   animation-duration: .5s;
   animation-fill-mode: forwards;
   opacity: 0;
   color: red;
+
+  @media screen and (max-width: 1024px) {
+    margin-top: -50%;
+  }
 }
 
-.notice_message{
+.notice_message {
   width: 250px;
   height: 100px;
-  position:absolute;
+  position: absolute;
   left: -15%;
   top: 30%;
   padding: 1%;
@@ -184,7 +210,7 @@
   animation-fill-mode: forwards;
   opacity: 0;
 
-  p{
+  p {
     text-align: right;
     font-family: 'Ranchers', cursive;
     font-size: 19px;
