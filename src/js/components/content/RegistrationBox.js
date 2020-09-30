@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {setClients} from "../../redux/actions/actions";
+import CreditCardBox from "./CreditCardBox";
 
 
 const mapPropsToState = (state) => {
@@ -12,6 +13,7 @@ const mapPropsToState = (state) => {
 const mapDispatchToProps = {
     setClients,
 }
+
 
 
 
@@ -28,6 +30,7 @@ class RegistrationBox extends React.Component {
                 loyaltyProgram: "",
                 mobileApp: "",
                 dateRegistration: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
+                creditNumber: "",
                 creditCard: {
                     number: "",
                     date: "",
@@ -69,6 +72,7 @@ class RegistrationBox extends React.Component {
                 loyaltyProgram: "",
                 mobileApp: "",
                 dateRegistration: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
+                creditNumber: "",
                 creditCard: {
                     number: "",
                     date: "",
@@ -78,9 +82,9 @@ class RegistrationBox extends React.Component {
 
         })
         //
-        // setTimeout(() => {
-        //     console.log(this.props.clients)
-        // })
+        setTimeout(() => {
+            console.log(this.props.clients)
+        })
     }
 
     showCreditCard = () => {
@@ -93,20 +97,8 @@ class RegistrationBox extends React.Component {
         console.log(creditCardBox)
     }
 
-    // CreditCardBox = () => {
-    //     return (
-    //         <div className="x"></div>
-    //     )
-    // }
-
 
     render() {
-        const CreditCardBox = () => {
-            return (
-                <div className="x"></div>
-            )
-        }
-
         return (
             <div className="content_box content_registration_box">
                 <form
@@ -152,20 +144,18 @@ class RegistrationBox extends React.Component {
                     <label htmlFor="creditCard">CREDIT CARD<span className="err_text"
                                                                  id="err_credit_card">err_credit_card</span></label>
                     <div>
-                        <div className="btn_show_credit_card" type="click" onClick={this.showCreditCard}>ADD CARD</div>
-                        {this.state.creditCardBox ? <CreditCardBox/> : null}
+                        <div className="btn_show_credit_card" type="click" onClick={this.showCreditCard}>Add card</div>
+                        {this.state.creditCardBox ? <CreditCardBox fun={this.changValue}/> : null}
                     </div>
 
-                    {/*<input*/}
-                    {/*    name="creditCard"*/}
-                    {/*    type="text"*/}
-                    {/*/>*/}
 
                     <label htmlFor="mobileApp">MOBILE APPLICATION<span className="err_text"
                                                                        id="err_m_app">err_m_app</span></label>
-                    <input
+                    <input disabled
                         name="mobileApp"
                         type="text"
+                        defaultValue="not available"
+
                     />
 
                     <button

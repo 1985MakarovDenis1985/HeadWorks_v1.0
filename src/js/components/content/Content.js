@@ -1,11 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
 import Routes from "../../Routes";
-import {getClients} from "../../redux/actions/actions";
-
-const mapDispatchToProps = {
-    getClients,
-}
 
 
 class Content extends React.Component{
@@ -31,4 +26,4 @@ class Content extends React.Component{
     }
 }
 
-export default connect(null, mapDispatchToProps)(Content)
+export default connect(null, null)(Content)
