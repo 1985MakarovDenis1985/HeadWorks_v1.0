@@ -9,11 +9,20 @@ import PropTypes from "prop-types"
 
 
     render() {
-        console.log(this.props)
         return (
-            <div className="credit_card_box">
-                <input className="credit_card_box_input" name="creditNumber" onChange={this.props.fun}  type="text"/>
+            <div>
+                <div className="credit_card_box">
+                    <input
+                        onChange={this.props.valueCardNumber}
+                        // value={this.state.person.creditNumber}
+                        className="credit_card_box_input" name="creditNumber" type="number"/>
+                </div>
+                <div style={{float: "right"}}
+                    className="err_text" id="err_credit_card">
+                    card must have 16 digits
+                </div>
             </div>
+
         )
     }
 }
