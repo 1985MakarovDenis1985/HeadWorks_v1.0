@@ -9,6 +9,64 @@
   }
 }
 
+
+@keyframes err_text_appear {
+  0%{
+    margin-right: 20px;
+    opacity: 0;
+  }
+  100%{
+    margin-right: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes main_err_text_appear {
+  0%{
+    margin-top: -15%;
+    opacity: 0;
+  }
+  100%{
+    margin-top: -20%;
+    opacity: 1;
+  }
+}
+
+@keyframes notice_message_appear {
+  0%{
+    left: -15%;
+    opacity: 0;
+  }
+  20%{
+    left: -1%;
+    opacity: 1;
+  }
+  50%{
+    left: -1%;
+    opacity: 1;
+  }
+  80%{
+    left: -1%;
+    opacity: 1;
+  }
+  100%{
+    left: -15%;
+    opacity: 0;
+  }
+}
+
+
+@keyframes main_err_text_disappear {
+  0%{
+    margin-top: -20%;
+    opacity: 1;
+  }
+  100%{
+    margin-top: -15%;
+    opacity: 0;
+  }
+}
+
 @keyframes credit_card {
   0%{
     transform: rotate(0deg);

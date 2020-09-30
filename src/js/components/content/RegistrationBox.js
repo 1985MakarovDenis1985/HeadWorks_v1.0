@@ -74,7 +74,7 @@ class RegistrationBox extends React.Component {
             res()
         })
             .then(() => {
-                this.validationForm()
+                this.validationAndAnimationForm()
             })
 
     }
@@ -91,7 +91,7 @@ class RegistrationBox extends React.Component {
                 newClient
             })
             console.log(this.state.validation)
-            this.validationForm()
+            this.validationAndAnimationForm()
             res()
         })
             .catch(err => console.error(err))
@@ -103,6 +103,7 @@ class RegistrationBox extends React.Component {
         if (this.state.validation == true) {
             return new Promise((res, rej) => {
                 setClients(this.state.person)
+                document.getElementById("error_text_information").style.animationName = "main_err_text_disappear"
                 res()
             }).then(() => {
                 this.setState({
@@ -120,9 +121,14 @@ class RegistrationBox extends React.Component {
                     validation: false
                 })
             }).then(() => {
-                this.validationForm()
+                this.validationAndAnimationForm()
+                document.getElementById("notice_message").style.animationName = "notice_message_appear"
+                setTimeout(()=>{
+                    document.getElementById("notice_message").style.animationName = "null"
+                }, 3000)
             })
         } else {
+            document.getElementById("error_text_information").style.animationName = "main_err_text_appear"
             console.log("sorry")
         }
     }
@@ -136,12 +142,35 @@ class RegistrationBox extends React.Component {
         }
     }
 
-    validationForm = () => {
+    validationAndAnimationForm = () => {
         const {creditNumber, firstName, secondName} = this.state.person;
         const errName = document.getElementById("err_name");
         const errSecondName = document.getElementById("err_second_name");
 
-        (firstName.length >= 2) ? errName.style.color = "green" ? errName.style.color = "green" : errName.style.color = "red";
+        if(firstName.length >= 3) {
+            errName.style.color = "green"
+            errName.style.animationName = "err_text_appear"
+            errName.innerText = "Ok"
+
+        }else {
+            errName.style.color = "red";
+            errName.style.animationName = "err_text_appear"
+            errName.innerText = "very short name..."
+        }
+
+        if(secondName.length >= 3) {
+            errSecondName.style.color = "green"
+            errSecondName.style.animationName = "err_text_appear"
+            errSecondName.innerText = "Ok"
+
+        }else {
+            errSecondName.style.color = "red"
+            errSecondName.style.animationName = "err_text_appear"
+            errSecondName.innerText = "very short second name..."
+        }
+
+
+
         (secondName.length >= 2) ? errSecondName.style.color = "green" : errSecondName.style.color = "red";
         (firstName.length >= 2 && secondName.length >= 2) ? this.setState({validation: true}) : this.setState({validation: false})
         if (this.state.creditCardBox) {
@@ -152,6 +181,7 @@ class RegistrationBox extends React.Component {
 
 
     render() {
+
         return (
             <div className="content_box content_registration_box" id="content_registration_box">
                 <form
@@ -219,7 +249,12 @@ class RegistrationBox extends React.Component {
                     </button>
                 </form>
 
+                <h5 className="error_text_information" id="error_text_information">Fill in all the fields</h5>
                 <h5 className="ajax_test" id="ajax_test"></h5>
+                <div className="notice_message" id="notice_message">
+                    <p>New client has been added</p>
+                    <p>{`${this.props.clients.length}    clients in data base`}</p>
+                </div>
             </div>
         );
     }
