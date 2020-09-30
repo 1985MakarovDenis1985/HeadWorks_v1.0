@@ -13,13 +13,15 @@ const mapDispatchToProps = {
     setClients,
 }
 
+
+
 class RegistrationBox extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            // newClient: {
-                id: this.props.clients.length+1,
+            person: {
+                id: this.props.clients.length + 1,
                 firstName: "",
                 secondName: "",
                 sex: "man",
@@ -31,8 +33,8 @@ class RegistrationBox extends React.Component {
                     date: "",
                     cv: ""
                 }
-            // },
-            // creditCardBox: false
+            },
+            creditCardBox: true
         }
     }
 
@@ -41,17 +43,15 @@ class RegistrationBox extends React.Component {
         e.preventDefault()
         const {name, value} = e.target
         return new Promise((res, rej) => {
-            let newClient = Object.assign(this.state, {})
+            let newClient = Object.assign(this.state.person, {})
             newClient[name] = value
+            console.log(newClient)
             this.setState({
+                person:
                 newClient
             })
-            // this.setState({
-            //     id : this.props.clients.length+1
-            // })
-
-            console.log(this.state)
-            res(newClient)
+            console.log()
+            res()
         })
             .catch(err => console.error(err))
     }
@@ -59,30 +59,54 @@ class RegistrationBox extends React.Component {
     addNewClient = (e) => {
         e.preventDefault()
         const {setClients} = this.props
-        setClients(this.state)
-
+        setClients(this.state.person)
         this.setState({
-            id: this.props.clients.length+2,
-            firstName: "",
-            secondName: "",
-            sex: "man",
-            loyaltyProgram: "",
-            mobileApp: "",
-            dateRegistration: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
-            creditCard: {
-                number: "",
-                date: "",
-                cv: ""
+            person: {
+                id: this.props.clients.length + 2,
+                firstName: "",
+                secondName: "",
+                sex: "man",
+                loyaltyProgram: "",
+                mobileApp: "",
+                dateRegistration: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
+                creditCard: {
+                    number: "",
+                    date: "",
+                    cv: ""
+                }
             }
-        })
 
-        setTimeout(() => {
-            console.log(this.props.clients)
         })
+        //
+        // setTimeout(() => {
+        //     console.log(this.props.clients)
+        // })
     }
+
+    showCreditCard = () => {
+        const {creditCardBox} = this.state
+        if (!creditCardBox) {
+            this.setState({creditCardBox: true})
+        } else {
+            this.setState({creditCardBox: false})
+        }
+        console.log(creditCardBox)
+    }
+
+    // CreditCardBox = () => {
+    //     return (
+    //         <div className="x"></div>
+    //     )
+    // }
 
 
     render() {
+        const CreditCardBox = () => {
+            return (
+                <div className="x"></div>
+            )
+        }
+
         return (
             <div className="content_box content_registration_box">
                 <form
@@ -96,7 +120,7 @@ class RegistrationBox extends React.Component {
                         onChange={this.changValue}
                         name="firstName"
                         type="text"
-                        value={this.state.firstName}/>
+                        value={this.state.person.firstName}/>
 
 
                     <label htmlFor={"secondName"}>FIRST NAME <span className="err_text" id="err_second_name">error second name</span></label>
@@ -104,14 +128,14 @@ class RegistrationBox extends React.Component {
                         onChange={this.changValue}
                         name="secondName"
                         type="text"
-                        value={this.state.secondName}/>
+                        value={this.state.person.secondName}/>
 
 
                     <label htmlFor="sex">SEX <span className="err_text" id="err_sex">err_sex</span></label>
                     <select
                         onChange={this.changValue}
                         name="sex"
-                        defaultValue={this.state.sex}
+                        defaultValue={this.state.person.sex}
                         id="registration_form_option_sex">
                         <option defaultValue="man">man</option>
                         <option value="woman">woman</option>
@@ -128,7 +152,8 @@ class RegistrationBox extends React.Component {
                     <label htmlFor="creditCard">CREDIT CARD<span className="err_text"
                                                                  id="err_credit_card">err_credit_card</span></label>
                     <div>
-                        <button>ADD CARD</button>
+                        <div className="btn_show_credit_card" type="click" onClick={this.showCreditCard}>ADD CARD</div>
+                        {this.state.creditCardBox ? <CreditCardBox/> : null}
                     </div>
 
                     {/*<input*/}
@@ -144,7 +169,6 @@ class RegistrationBox extends React.Component {
                     />
 
                     <button
-                        // onClick={this.addNewClient}
                         type="submit" id="btn_add_client">add client
                     </button>
                 </form>
