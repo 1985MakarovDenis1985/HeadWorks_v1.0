@@ -16,9 +16,22 @@
     display: flex;
     flex-direction: column;
 
-    input{
-      margin-top: 15px;
+    label{
+      margin-top: 10px;
+      margin-bottom: 0;
+
+      span{
+        float: right;
+      }
+    }
+
+    input, select{
+      //margin-top: 15px;
       outline: none;
+    }
+
+    select{
+      height: 30px;
     }
 
     .err_text{

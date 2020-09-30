@@ -1,8 +1,8 @@
-import {GET_CLIENT} from "../types";
+import {ADD_CLIENT} from "../types";
 
-export function getClients(users){
+export function setClients(users){
     return {
-        type: GET_CLIENT,
+        type: ADD_CLIENT,
         payload: users
     }
 }
