@@ -17,15 +17,11 @@ class ClientsBox extends React.Component {
         super(props);
     }
 
-
-
     render() {
-        let {clients} = JSON.parse(JSON.stringify(this.props))
-
         return (
             <div className="content_box content_clients_box">
                 <div className="content_box_clients_box">
-                    {clients.reverse().map((el) => (
+                    {this.props.clients.reverse().map((el) => (
                         <div className="content_box_user_box" key={el.id}>
                             <p> Name: <span>{el.firstName}  {el.secondName}</span></p>
                             <p> Date of registration: <span>{el.dateRegistration}</span></p>

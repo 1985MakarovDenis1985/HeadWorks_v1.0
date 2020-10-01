@@ -11,6 +11,7 @@ footer {
   font-family: 'Monoton', cursive;
 
   .footer_text{
+    z-index: 100;
     @media screen and (max-width: 414px) {
       font-size: 12px;
     }
