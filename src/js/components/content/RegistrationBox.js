@@ -33,7 +33,7 @@ class RegistrationBox extends React.Component {
                 dateRegistration: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
                 creditNumber: "",
             },
-            creditCardBox: true,
+            creditCardBox: false,
             bottomText: "",
             validation: false
         }

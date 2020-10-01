@@ -23,11 +23,16 @@
       width: 100%;
       list-style-type: none;
       //border: 1px solid red;
+      padding: 0!important;
 
       li {
         font-family: 'Bungee Shade', cursive;
         font-size: 25px;
         transition: .3s;
+
+        @media screen and (max-width: 414px) {
+          font-size: 10px;
+        }
 
         &:hover {
           transform: scale(1.2);
