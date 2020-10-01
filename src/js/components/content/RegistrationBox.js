@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {setClients} from "../../redux/actions/actions";
+import {setClients, showCard, hideCard, validForm, invalidForm} from "../../redux/actions/actions";
 import CreditCardBox from "./CreditCardBox";
 import PropTypes from "prop-types"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -9,19 +9,24 @@ import {faCreditCard} from "@fortawesome/free-solid-svg-icons";
 
 const mapPropsToState = (state) => {
     return {
-        clients: state.clientReducer.users
+        clients: state.clientReducer.users,
+        creditCardBox: state.showCardBoxReducer.cardBox,
+        validation: state.validationFormReducer.validation
     }
 }
 
 const mapDispatchToProps = {
     setClients,
+    showCard,
+    hideCard,
+    validForm,
+    invalidForm
 }
 
 
 class RegistrationBox extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             person: {
                 id: this.props.clients.length + 1,
@@ -33,29 +38,21 @@ class RegistrationBox extends React.Component {
                 dateRegistration: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
                 creditNumber: "",
             },
-            creditCardBox: false,
-            bottomText: "",
-            validation: false
         }
     }
 
     componentDidMount() {
         fetch("https://meowfacts.herokuapp.com")
             .then(res => res.json())
-            .then(res =>
-                document.getElementById("ajax_test").innerText = res.data
-            )
+            .then(res => document.getElementById("ajax_test").innerText = res.data)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const registrationBlock = document.getElementById("content_registration_box");
         const ajaxText = document.getElementById("ajax_test");
-        console.log(this.state.creditCardBox);
-        // (this.state.validation == false) ? registrationBlock.style.borderColor = "red" : registrationBlock.style.borderColor = "transparent";
-        (this.state.creditCardBox == false) ? ajaxText.style.display = "block" : ajaxText.style.display = "none"
+        (this.props.creditCardBox == false) ? ajaxText.style.display = "block" : ajaxText.style.display = "none"
     }
 
-
+    //// ---- Set number of credit card if number valid
     valueCardNumber = (e) => {
         e.preventDefault()
         const {name, value} = e.target
@@ -65,7 +62,6 @@ class RegistrationBox extends React.Component {
         if (numberOfCart.creditNumber.length != 16) {
             numberOfCart.creditNumber = "nothing"
         }
-
         return new Promise((res, rej) => {
             this.setState({
                 person:
@@ -73,13 +69,10 @@ class RegistrationBox extends React.Component {
             })
             res()
         })
-            .then(() => {
-                this.validationAndAnimationForm()
-            })
-
+            .then(() => this.validationAndAnimationForm())
     }
 
-
+    //// ---- Get value of first and second names
     changValue = (e) => {
         e.preventDefault()
         const {name, value} = e.target
@@ -90,19 +83,18 @@ class RegistrationBox extends React.Component {
                 person:
                 newClient
             })
-            console.log(this.state.validation)
             this.validationAndAnimationForm()
             res()
         })
             .catch(err => console.error(err))
     }
 
+    //// ---- Add new client if all ok
     addNewClient = (e) => {
         e.preventDefault()
-        const {setClients} = this.props
-        if (this.state.validation == true) {
+        if (this.props.validation == true) {
             return new Promise((res, rej) => {
-                setClients(this.state.person)
+                this.props.setClients(this.state.person)
                 document.getElementById("error_text_information").style.animationName = "main_err_text_disappear"
                 res()
             }).then(() => {
@@ -117,71 +109,69 @@ class RegistrationBox extends React.Component {
                         dateRegistration: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
                         creditNumber: "",
                     },
-                    creditCardBox: false,
-                    validation: false
                 })
             }).then(() => {
                 this.validationAndAnimationForm()
                 document.getElementById("notice_message").style.animationName = "nothing"
-                setTimeout(()=>{
+                setTimeout(() => {
                     document.getElementById("notice_message").style.animationName = "notice_message_appear"
-                }, 100)
+                }, 0)
             })
         } else {
             document.getElementById("error_text_information").style.animationName = "main_err_text_appear"
-            console.log("sorry")
         }
     }
 
+
     showCreditCard = () => {
-        const {creditCardBox} = this.state
-        if (!creditCardBox) {
-            this.setState({creditCardBox: true})
-        } else {
-            this.setState({creditCardBox: false})
-        }
+        const {creditCardBox, showCard, hideCard} = this.props;
+        (creditCardBox == false) ? showCard() : hideCard()
     }
 
     validationAndAnimationForm = () => {
         const {creditNumber, firstName, secondName} = this.state.person;
         const errName = document.getElementById("err_name");
+        const {validForm, invalidForm} = this.props
         const errSecondName = document.getElementById("err_second_name");
 
-        if(firstName.length >= 3) {
+        if (firstName.length >= 3) {
             errName.style.color = "green"
             errName.style.animationName = "err_text_appear"
             errName.innerText = "Ok"
 
-        }else {
+        } else {
             errName.style.color = "red";
             errName.style.animationName = "err_text_appear"
             errName.innerText = "very short name..."
         }
 
-        if(secondName.length >= 3) {
+        if (secondName.length >= 3) {
             errSecondName.style.color = "green"
             errSecondName.style.animationName = "err_text_appear"
             errSecondName.innerText = "Ok"
 
-        }else {
+        } else {
             errSecondName.style.color = "red"
             errSecondName.style.animationName = "err_text_appear"
             errSecondName.innerText = "very short second name..."
         }
 
-
-
         (secondName.length >= 2) ? errSecondName.style.color = "green" : errSecondName.style.color = "red";
-        (firstName.length >= 2 && secondName.length >= 2) ? this.setState({validation: true}) : this.setState({validation: false})
-        if (this.state.creditCardBox) {
+        (firstName.length >= 2 && secondName.length >= 2) ? validForm() : invalidForm()
+        if (this.props.creditCardBox) {
             const errCreditCard = document.getElementById("err_credit_card");
-            (creditNumber.length == 16) ? errCreditCard.style.color = "green" : errCreditCard.style.color = "red";
+            if (creditNumber.length == 16) {
+                errCreditCard.style.color = "green";
+                errCreditCard.innerText = "Ok"
+            } else {
+                errCreditCard.style.color = "red"
+                errCreditCard.innerText = "length must be 16 digits"
+            }
         }
     }
 
 
     render() {
-
         return (
             <div className="content_box content_registration_box" id="content_registration_box">
                 <form
@@ -228,12 +218,12 @@ class RegistrationBox extends React.Component {
 
                     <label htmlFor="creditCard" style={{float: "left"}}>ADD CREDIT CARD <span
                         className="btn_show_credit_card" type="click"
-                        onClick={this.showCreditCard}><FontAwesomeIcon className="icon_credit_card" icon={faCreditCard}/></span>
-
+                        onClick={this.showCreditCard}><FontAwesomeIcon className="icon_credit_card"
+                                                                       icon={faCreditCard}/></span>
 
 
                     </label>
-                    <div>{this.state.creditCardBox ?
+                    <div>{this.props.creditCardBox ?
                         <CreditCardBox valueCardNumber={this.valueCardNumber}/> : null}</div>
 
 
@@ -261,7 +251,15 @@ class RegistrationBox extends React.Component {
 }
 
 RegistrationBox.propTypes = {
-    clients: PropTypes.array
+    clients: PropTypes.array,
+    creditCardBox: PropTypes.bool,
+    validation: PropTypes.bool,
+    setClients: PropTypes.func,
+    showCard: PropTypes.func,
+    hideCard: PropTypes.func,
+    validForm: PropTypes.func,
+    invalidForm: PropTypes.func
+
 }
 
 export default connect(mapPropsToState, mapDispatchToProps)(RegistrationBox)
